@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/dio
+    url: jdbc:postgresql://localhost:5432/payment
     username: postgres
     password: 12345
     driver-class-name: org.postgresql.Driver
@@ -32,16 +32,16 @@ spring:
               deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
               serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
       bindings:
-        checkout-created-output: # tópico virtual
+        checkout-created-input: # tópico virtual
           destination: streaming.ecommerce.checkout.created
           contentType: application/*+avro
-          producer:
+          consumer:
             use-native-encoding: true
-        payment-paid-input:
+        payment-paid-output:
           destination: streaming.ecommerce.payment.paid
           contentType: application/*+avro
           group: ${spring.application.name}
-          consumer:
+          producer:
             use-native-decoding: true
   kafka:
     properties:
